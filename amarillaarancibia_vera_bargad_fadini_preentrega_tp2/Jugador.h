@@ -6,14 +6,15 @@ class Jugador
 public:
     void setup();
     void draw();
+    void update();
 
     void setX(int X);
     void setY(int y); // debe ser distinto para evitar ambigüedades
     int getX();
     int getY();
 
-    void setDisparos ( int disparos);
-    int getDisparos();
+    void setVidas( int vidas);
+    int getVidas();
 
     void setResistencia(int resistencia);
     int getResistencia();
@@ -22,6 +23,6 @@ public:
 private:
     int m_x, m_y; // Posicion del jugador. Utilizo M que significa miembro. Practica estandar.
     int m_resistencia;
-    int m_disparos;
+    int m_vidas;
     bool m_derrota;
 };

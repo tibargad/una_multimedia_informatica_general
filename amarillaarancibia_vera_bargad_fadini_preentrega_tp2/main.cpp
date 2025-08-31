@@ -96,6 +96,8 @@ void input ()
 	case 27:
 		game_over = true;
 		break;
+	case 'e':
+			miJugador.setResistencia (miJugador.getResistencia() - 1);
 	default:
 		break;
 		}
@@ -105,7 +107,9 @@ void input ()
 
 void update()
 {
+	miJugador.update();
 
+	if(miJugador.getVidas() <=0 ) game_over = true;
 
 }
 
@@ -118,8 +122,15 @@ void draw()
 	mvprintw(0, 80, "[ RESISTENCIA:     ]");
 	for (int i = 0; i < miJugador.getResistencia(); i++)
 	{
-		mvaddch(0, 91 + i, ACS_CKBOARD);
+		mvaddch(0, 94 + i, ACS_CKBOARD);
 	}
+
+	mvprintw(0, 100, "[ VIDAS:     ]");
+	for (int i = 0; i < miJugador.getVidas(); i++)
+	{
+		mvaddch(0, 109 + i, A_ALTCHARSET | 128 );
+	}
+	
 
 	miJugador.draw();
 
