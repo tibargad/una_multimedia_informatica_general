@@ -81,16 +81,16 @@ void input ()
 		switch (tecla)
 		{
 		case KEY_UP:
-		miJugador.setY(miJugador.getY() - 1); // obtiene el valor y le resta y para desplazarse
+		if (miJugador.getY() > 1) miJugador.setY(miJugador.getY() - 1); // obtiene el valor y le resta y para desplazarse
 		break;
 		case KEY_DOWN:
-		miJugador.setY(miJugador.getY() + 1);
+		if (miJugador.getY() < ALTO - 6) miJugador.setY(miJugador.getY() + 1);
 		break;
 		case KEY_LEFT:
-        miJugador.setX(miJugador.getX() - 1);
+        if (miJugador.getX() > 1) miJugador.setX(miJugador.getX() - 1);
         break;
         case KEY_RIGHT:
-        miJugador.setX(miJugador.getX() + 1);
+        if (miJugador.getX() < ANCHO -9) miJugador.setX(miJugador.getX() + 1);
         break;
 		
 	case 27:
@@ -114,6 +114,12 @@ void draw()
 {
 	erase();
 	box(stdscr, 0, 0);
+
+	mvprintw(0, 80, "[ RESISTENCIA:     ]");
+	for (int i = 0; i < miJugador.getResistencia(); i++)
+	{
+		mvaddch(0, 91 + i, ACS_CKBOARD);
+	}
 
 	miJugador.draw();
 

@@ -12,7 +12,16 @@ public:
     int getX();
     int getY();
 
+    void setDisparos ( int disparos);
+    int getDisparos();
+
+    void setResistencia(int resistencia);
+    int getResistencia();
+
+
 private:
     int m_x, m_y; // Posicion del jugador. Utilizo M que significa miembro. Practica estandar.
-
+    int m_resistencia;
+    int m_disparos;
+    bool m_derrota;
 };

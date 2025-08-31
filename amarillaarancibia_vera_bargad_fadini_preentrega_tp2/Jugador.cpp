@@ -5,6 +5,8 @@ void Jugador::setup()
     m_x = 60;
     m_y = 20;
 
+    m_resistencia = 3;
+
 }
 
 ///////////////////////////////////////////////////////////////
@@ -55,3 +57,7 @@ void Jugador::setY(int y) {m_y = y;}
 
 int Jugador::getX() { return m_x;}
 int Jugador::getY() { return m_y;}
+void Jugador::setResistencia( int resistencia) {m_resistencia = resistencia; }
+int Jugador::getResistencia () {return m_resistencia;}
+void Jugador::setDisparos ( int disparos ) {m_disparos = disparos;}
+int Jugador::getDisparos () {return m_disparos;}
