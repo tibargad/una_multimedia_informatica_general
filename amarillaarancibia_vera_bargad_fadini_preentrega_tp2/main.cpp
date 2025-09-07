@@ -2,6 +2,9 @@
 #include <iostream>
 #include <ncurses.h>
 #include "Jugador.h"
+#include "Cascarudo.h"
+#include <vector>
+#include "Proyectil.h"
 
 using namespace std;
 
@@ -15,6 +18,9 @@ int puntaje;
 bool salir;
 
 Jugador miJugador;
+Cascarudo cascarudo_01(10, 2), cascarudo_02(5, 8), cascarudo_03 (2, 5);
+
+vector<Proyectil> Proyectiles;
 
 void setup();
 void input();
@@ -98,6 +104,10 @@ void input ()
 		break;
 	case 'e':
 			miJugador.setResistencia (miJugador.getResistencia() - 1);
+			break;
+	case 'z':
+			Proyectiles.push_back(Proyectil(miJugador.getX() + 2, miJugador.getY()));
+			break;
 	default:
 		break;
 		}
@@ -110,6 +120,14 @@ void update()
 	miJugador.update();
 
 	if(miJugador.getVidas() <=0 ) game_over = true;
+
+	cascarudo_01.update();
+	cascarudo_02.update();
+	cascarudo_03.update();
+	
+	cascarudo_01.colision(miJugador);
+	cascarudo_02.colision(miJugador);
+	cascarudo_03.colision(miJugador);
 
 }
 
@@ -133,6 +151,11 @@ void draw()
 	
 
 	miJugador.draw();
+	
+	cascarudo_01.draw();
+	cascarudo_02.draw();
+	cascarudo_03.draw();
+
 
 	refresh();
 	delay_output(DELAY);
