@@ -49,7 +49,10 @@ void Cascarudo::colision(Jugador &rJugador)
         m_y = 1;
 
     }
-
-
-
 }
+
+////////////////////////////////////
+
+int Cascarudo::getX() { return m_x; }
+int Cascarudo::getY() { return m_y; } // metodos accesor para la colision
+

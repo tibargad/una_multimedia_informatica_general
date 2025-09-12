@@ -18,9 +18,9 @@ int puntaje;
 bool salir;
 
 Jugador miJugador;
-Cascarudo cascarudo_01(10, 2), cascarudo_02(5, 8), cascarudo_03 (2, 5);
 
 vector<Proyectil> Proyectiles;
+vector<Cascarudo> Cascarudos;
 
 void setup();
 void input();
@@ -78,6 +78,12 @@ void setup()
 
 	miJugador.setup();
 
+	for (int i = 0;i < 5; i++)
+	{
+		Cascarudos.push_back(Cascarudo(rand() + 1, 1));
+
+	}
+
 }
 
 void input ()
@@ -121,13 +127,23 @@ void update()
 
 	if(miJugador.getVidas() <=0 ) game_over = true;
 
-	cascarudo_01.update();
-	cascarudo_02.update();
-	cascarudo_03.update();
-	
-	cascarudo_01.colision(miJugador);
-	cascarudo_02.colision(miJugador);
-	cascarudo_03.colision(miJugador);
+	for ( int i = 0; i < Cascarudos.size(); i++)
+	{
+		Cascarudos[i].update();
+		Cascarudos[i].colision(miJugador);
+
+	}
+
+	for (int i=0; i < Proyectiles.size(); i++)
+	{
+		Proyectiles [i].update();
+
+		if (Proyectiles[i].limite())
+		{
+			Proyectiles.erase(Proyectiles.begin()+i);
+		}
+
+	}
 
 }
 
@@ -152,9 +168,12 @@ void draw()
 
 	miJugador.draw();
 	
-	cascarudo_01.draw();
-	cascarudo_02.draw();
-	cascarudo_03.draw();
+	for (int i = 0; i < Cascarudos.size(); i++)
+	{
+		Cascarudos[i].draw();
+	}
+
+	for ( int i = 0; i < Proyectiles.size(); i++) Proyectiles [i].draw();
 
 
 	refresh();

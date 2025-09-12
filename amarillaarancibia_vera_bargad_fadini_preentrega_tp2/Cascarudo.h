@@ -14,6 +14,9 @@ public:
 
     void colision( Jugador &rJugador );
 
+    int getX();
+    int getY();
+
 
 private:
     float m_x, m_y;
