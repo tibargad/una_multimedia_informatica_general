@@ -10,9 +10,14 @@ class Proyectil
         Proyectil(int x, int y);
         void update();
         void draw();
-
-    private:
-        int m_x, m_y;
         
 
-}
+
+    bool limite();
+
+    int getX();
+    int getY();
+
+    private:
+        int m_x, m_y;        
+};
