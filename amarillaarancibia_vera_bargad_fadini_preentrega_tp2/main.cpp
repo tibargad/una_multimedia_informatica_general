@@ -138,9 +138,23 @@ void update()
 	{
 		Proyectiles [i].update();
 
-		if (Proyectiles[i].limite())
+        for( int j = 0; j < Cascarudos.size(); j++)
 		{
-			Proyectiles.erase(Proyectiles.begin()+i);
+			if (Proyectiles[i].colision(Cascarudos[j]))
+			{
+				Cascarudos[j].setX(rand() + 1);
+				Cascarudos[j].setY(1);
+
+				Proyectiles.erase(Proyectiles.begin() + i);
+				i--; // Para no saltarnos un proyectil
+				break;
+			}
+			
+		}
+		if (i >= 0 && Proyectiles[i].limite())
+		{
+			Proyectiles.erase(Proyectiles.begin() + i);
+			i--; // Para no saltarnos el proyectil
 		}
 
 	}

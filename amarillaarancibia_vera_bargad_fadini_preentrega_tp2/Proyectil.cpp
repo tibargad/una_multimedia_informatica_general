@@ -17,6 +17,15 @@ void Proyectil::draw()
 
 }
 
+bool Proyectil::colision(Cascarudo &rCascarudo)
+{
+    if (m_x >= rCascarudo.getX() && m_x <= rCascarudo.getX() + 6 && m_y >= rCascarudo.getY() && m_y <= rCascarudo.getY() + 4)
+    {
+        return true;
+    }
+    return false;
+}
+
 bool Proyectil::limite()
 {
     if (m_y < 1) return true; // Si es verdadero se ejecuta

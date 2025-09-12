@@ -54,5 +54,6 @@ void Cascarudo::colision(Jugador &rJugador)
 ////////////////////////////////////
 
 int Cascarudo::getX() { return m_x; }
-int Cascarudo::getY() { return m_y; } // metodos accesor para la colision
-
+int Cascarudo::getY() { return m_y; }
+void Cascarudo::setX(int x) { m_x = x; }
+void Cascarudo::setY(int y) { m_y = y; }
