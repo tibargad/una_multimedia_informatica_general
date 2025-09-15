@@ -4,7 +4,7 @@
 class Jugador
 {
 public:
-    void setup();
+    Jugador(int startX, int startY);
     void draw();
     void update();
 

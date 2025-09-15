@@ -13,11 +13,12 @@ const int ANCHO = 120;
 const int ALTO = 40;
 const int DELAY = 30;
 
-bool game_over;
-int puntaje;
-bool salir;
+enum class GameState { PLAYING, LOSE, EXIT, CREDITS, MENU };
+GameState estadoActual;
 
-Jugador miJugador;
+int puntaje;
+
+Jugador miJugador(60, 20); 
 
 vector<Proyectil> Proyectiles;
 vector<Cascarudo> Cascarudos;
@@ -29,6 +30,9 @@ void draw();
 void gameover();
 
 
+
+
+
 int main()
 {
 	initscr();
@@ -36,6 +40,18 @@ int main()
 	curs_set(FALSE);
 	keypad(stdscr, TRUE);
 	nodelay(stdscr, TRUE);
+
+
+	start_color();
+	use_default_colors();
+	
+	init_pair(10, COLOR_WHITE, COLOR_CYAN); // BASE PARA EL FONDO
+	init_pair(1, COLOR_MAGENTA, COLOR_CYAN); // JUGADOR
+	init_pair(2, COLOR_BLUE, COLOR_CYAN);  // CASCARUDO
+	init_pair(3, COLOR_GREEN, COLOR_CYAN); // ENTORNO
+	bkgd(COLOR_PAIR(10)); // FONDO
+
+	estadoActual = GameState::MENU;
 
 	if ( LINES < ALTO || COLS < ANCHO)
 	{
@@ -46,25 +62,62 @@ int main()
 
 setup();
 
-salir = false;
 
-while (!salir)
-{
-	while (!game_over)
-	{
-		input();
-		update();
-		draw();
+	while (estadoActual != GameState::EXIT) 
+		{
+			
+			switch (estadoActual)
+			{
+				case GameState::MENU:
+            {
+                clear();
+                int max_y, max_x;
+                getmaxyx(stdscr, max_y, max_x);
+
+                
+                mvprintw(max_y / 2 - 2, (max_x / 2) - 10, "1 - Jugar");
+                mvprintw(max_y / 2 - 1, (max_x / 2) - 10, "2 - Creditos");
+                mvprintw(max_y / 2,     (max_x / 2) - 10, "3 - Salir");
+                refresh();
+
+                int opcion = getch();
+
+                switch (opcion)
+                {
+                    case '1':
+                        setup();
+                        estadoActual = GameState::PLAYING;
+                        break;
+                    case '2':
+                       
+                        clear();
+                        mvprintw(max_y / 2, (max_x / 2) - 22, "Somos: Ani, Dulce, Lourdes y Tomas");
+                        mvprintw(max_y / 2 + 2, (max_x / 2) - 15, "Presiona una tecla para volver...");
+                        refresh();
+                        getch(); 
+                        break;
+                    case '3':
+                        estadoActual = GameState::EXIT;
+                        break;
+                }
+                break;
+            }
+
+            case GameState::PLAYING:
+                input();
+                update();
+                draw();
+                break;
+
+            case GameState::LOSE:
+                gameover();
+                break;
+			}
+		}
+
+		endwin();
+		return 0;
 	}
-	gameover();
-}
-
-endwin();
-
-cout << endl;
-
-  return 0;
-}
 
 	
 //////////////////////////////////////////////////////////////////////////////
@@ -73,14 +126,13 @@ void setup()
 {
 
 		
-	game_over = false;
 	puntaje = 0;
 
-	miJugador.setup();
+	Cascarudos.clear(); // Para que cuando reiniciemos el juego se limpie
 
 	for (int i = 0;i < 5; i++)
 	{
-		Cascarudos.push_back(Cascarudo(rand() + 1, 1));
+		Cascarudos.push_back(Cascarudo((rand() % (ANCHO - 7)) + 1, 1));
 
 	}
 
@@ -106,7 +158,7 @@ void input ()
         break;
 		
 	case 27:
-		game_over = true;
+		estadoActual = GameState::EXIT;
 		break;
 	case 'e':
 			miJugador.setResistencia (miJugador.getResistencia() - 1);
@@ -125,7 +177,7 @@ void update()
 {
 	miJugador.update();
 
-	if(miJugador.getVidas() <=0 ) game_over = true;
+	if(miJugador.getVidas() <=0 ) estadoActual = GameState::LOSE;
 
 	for ( int i = 0; i < Cascarudos.size(); i++)
 	{
@@ -200,34 +252,43 @@ void draw()
 
 void gameover()
 {
-	for ( int y = 10; y < 16; y++) 
-		mvhline(y, 40, ' ', 40);
+    int centro_x = ANCHO / 2;
+    int centro_y = ALTO / 2;
+    int ancho_caja = 50; 
+    int alto_caja = 6;  
 
-		mvaddch(9, 39, ACS_ULCORNER);
-		mvaddch(9, 80, ACS_URCORNER);
-		mvaddch(16, 39, ACS_LLCORNER);
-		mvaddch(16, 80, ACS_LRCORNER);
+    int caja_x1 = centro_x - (ancho_caja / 2);
+    int caja_y1 = centro_y - (alto_caja / 2);
+    int caja_x2 = centro_x + (ancho_caja / 2);
+    int caja_y2 = centro_y + (alto_caja / 2);
 
-		mvhline(9, 40, ACS_HLINE, 40);
-		mvhline(16, 40, ACS_HLINE, 40);
+    mvaddch(caja_y1, caja_x1, ACS_ULCORNER);
+    mvaddch(caja_y1, caja_x2, ACS_URCORNER);
+    mvaddch(caja_y2, caja_x1, ACS_LLCORNER);
+    mvaddch(caja_y2, caja_x2, ACS_LRCORNER);
+    mvhline(caja_y1, caja_x1 + 1, ACS_HLINE, ancho_caja - 1);
+    mvhline(caja_y2, caja_x1 + 1, ACS_HLINE, ancho_caja - 1);
+    mvvline(caja_y1 + 1, caja_x1, ACS_VLINE, alto_caja - 1);
+    mvvline(caja_y1 + 1, caja_x2, ACS_VLINE, alto_caja - 1);
 
-		mvvline(10, 39, ACS_VLINE, 6);
-		mvvline(10, 80, ACS_VLINE, 6);
-
-		mvprintw(12, 55, "HAS SIDO DEVORADO POR UNO DE LOS CASCARUDOS. GAME OVER.");
-		mvprintw(13, 50, "SOS EL ETERNAUTA QUE VAGA POR EL TIEMPO. ¿QUERÉS VOLVER A INTENTAR? (S/N)");
-
+ 
+    mvprintw(centro_y - 1, centro_x - 17, "FUISTE DEVORADO POR UN CASCARUDO.");
+    mvprintw(centro_y + 1, centro_x - 15, "¿Reintentar? (S/N)");
+    
+		nodelay(stdscr, FALSE);
 		int opcion = getch();
 
 		if (opcion == 's' || opcion == 'S')
 		{
-			setup();
+			setup(); 
+			estadoActual = GameState::PLAYING;
 		}
 		else if( opcion == 'n' || opcion == 'N')
 		{
-			salir = TRUE;
-
+			estadoActual = GameState::EXIT;
 		}
 
-
+		nodelay(stdscr, TRUE);
 }
+
+

@@ -1,0 +1,21 @@
+Pasar a presente y voz activa: más inmersivo y directo.
+
+Evitar repeticiones y frases largas; ir a imágenes concretas.
+
+Explicitar gameplay: objetivo, mecánicas, condición de derrota.
+
+Cerrar con una propuesta estética (ASCII post-apocalíptico) y una mecánica distintiva (arma limitada, energía, etc.). Usen COLOR, gris/rojo etc relacionados al eternauta.
+
+Correcciones obligatorias
+
+Desacople entre Jugador.h y Jugador.cpp
+En el .cpp usan un constructor (Jugador(int startX,int startY)) y miembros x, y, vidas, energia, ...; en el .h no existe ese ctor y los campos se llaman m_x, m_y, m_vidas, m_resistencia.
+Unifiquen la interfaz (elegí un estilo / criterio y sostenerlo en ambos archivos)
+
+Límites y colisiones
+Eviten “salirse” del tablero y dibujar fuera del box. No usen números mágicos, usen variables COLS/LINES o ANCHO/ALTO con margen
+Pantallas que realmente “esperen” tecla,si tenen nodelay(TRUE), getch() no espera. Antes de leer S/N o continuar
+Inicialización de ncurses y pares de color, faltan (se que están incompletos) algunos básicos. Al iniciarinitscr(); noecho(); cbreak(); curs_set(0); keypad(stdscr, TRUE); start_color(); use_default_colors(); init_pair(1, COLOR_CYAN, -1); // jugador init_pair(2, COLOR_RED, -1); // enemigo init_pair(3, COLOR_GREEN, -1); // ítems/HUD
+agreguen enum class GameState { MENU, PLAYING, WIN, LOSE, EXIT }; y reemplazá flags sueltos (gameover/salir) por state.
+
+Validen tamaño de terminal (120×40 o 80×50) y muestren un mensaje en caso contrario en lugar de cerrar en seco.
