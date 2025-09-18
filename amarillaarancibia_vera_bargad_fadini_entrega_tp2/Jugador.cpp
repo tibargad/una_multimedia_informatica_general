@@ -64,7 +64,7 @@ if (!m_derrota)
 
 }
 else{
-
+attron(COLOR_PAIR(2));
 mvaddch(m_y, m_x + 2, ACS_ULCORNER);
 mvaddch(m_y, m_x + 3, ACS_HLINE);
 mvaddch(m_y, m_x + 4, ACS_HLINE);
@@ -96,7 +96,7 @@ mvaddch(m_y + 4, m_x + 4, ' ');
 mvaddch(m_y + 4, m_x + 5, '\\');
 
 refresh();
-delay_output(200);
+delay_output(400);
 
 mvaddch(m_y, m_x + 2, ACS_ULCORNER);
 mvaddch(m_y, m_x + 3, ACS_HLINE);
@@ -119,8 +119,10 @@ mvaddch(m_y + 3, m_x + 4, ' ');
 mvaddch(m_y + 3, m_x + 5, '_');
 mvaddch(m_y + 3, m_x + 6, '\\');
 
+attroff(COLOR_PAIR(2));
+
 refresh();
-delay_output(200);
+delay_output(400);
 
 m_derrota = false;
 
